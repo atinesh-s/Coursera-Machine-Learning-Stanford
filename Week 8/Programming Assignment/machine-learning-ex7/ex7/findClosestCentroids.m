@@ -21,16 +21,18 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-m = size(X,1);
+[k, n] = size(centroids);
+[m, n] = size(X);
 
-for i = 1:m
-    distance_array = zeros(1,K);
-    for j = 1:K
-        distance_array(1,j) = sqrt(sum(power((X(i,:)-centroids(j,:)),2)));
-    end
-    [~, d_idx] = min(distance_array);
-    idx(i,1) = d_idx;
-end
+X         = reshape(X,         m, 1, n);
+centroids = reshape(centroids, 1, k, n);
+
+dist = (X - centroids) .^ 2;
+dist = sum(dist, 3);
+
+[_ idx] = min(dist');
+
+idx = idx';
 
 % =============================================================
 
